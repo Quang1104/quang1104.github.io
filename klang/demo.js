@@ -9,15 +9,26 @@ const focusButton = document.querySelector('#focus-button');
 const resetButton = document.querySelector('#reset-button');
 const musicButton = document.querySelector('#music-button');
 const newsButton = document.querySelector('#news-button');
+const introButton = document.querySelector('#intro-button');
+const introStatus = document.querySelector('#intro-status');
+const voiceButton = document.querySelector('#voice-button');
+const voiceHint = document.querySelector('#voice-hint');
 const form = document.querySelector('#demo-command');
 const input = document.querySelector('#command-text');
 const music = document.querySelector('#klang-music');
+const intro = document.querySelector('#klang-intro-audio');
+const briefing = document.querySelector('#klang-briefing-audio');
+const players = [music, intro, briefing];
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const core = createCore(document.querySelector('#klang-core'), matchMedia('(prefers-reduced-motion: reduce)'));
 const duration = 25 * 60 * 1000;
 let remaining = duration;
 let deadline = null;
 let tickId;
+let timerState = 'Ready';
+let recognition = null;
+let listening = false;
 
 function say(text) {
   reply.textContent = text;
@@ -25,8 +36,17 @@ function say(text) {
 
 function setMode(mode, label, tint) {
   stage.dataset.mode = mode;
-  stateLabel.textContent = label;
+  timerState = label;
   core.setTint(tint);
+  syncOrb();
+}
+
+function syncOrb() {
+  const speaking = [intro, briefing].some((audio) => !audio.paused && !audio.ended);
+  const state = listening ? 'listening' : speaking ? 'speaking' : 'idle';
+  core.setState(state);
+  stage.dataset.voice = state;
+  stateLabel.textContent = listening ? 'Listening' : speaking ? 'Speaking' : timerState;
 }
 
 function renderTime() {
@@ -90,13 +110,25 @@ function resetFocus() {
   say('The focus timer is back to 25 minutes.');
 }
 
-function updateMusic() {
+function updateAudioControls() {
   musicButton.textContent = music.paused ? 'Play piano' : 'Pause piano';
   musicButton.setAttribute('aria-pressed', String(!music.paused));
+  introButton.textContent = intro.paused || intro.ended ? 'Hear Klang in Vietnamese' : 'Pause introduction';
+  newsButton.textContent = briefing.paused || briefing.ended ? 'Hear sample briefing' : 'Pause briefing';
+  syncOrb();
+}
+
+function playExclusive(audio) {
+  stopListening();
+  for (const other of players) {
+    if (other !== audio) other.pause();
+  }
+  if (audio.ended) audio.currentTime = 0;
+  return audio.play();
 }
 
 function playMusic() {
-  music.play().then(() => say('Rain Keys is playing. You can pause it anytime.')).catch((error) => {
+  playExclusive(music).then(() => say('Rain Keys is playing. You can pause it anytime.')).catch((error) => {
     if (error.name !== 'AbortError') say('Piano playback is unavailable. Try the Play piano button again.');
   });
 }
@@ -107,37 +139,135 @@ function pauseMusic() {
 }
 
 function showBriefing() {
-  say('For this sample briefing, Hanoi may see showers. On the AI desk, a research team is testing smaller models for on-device transcription. These are demo headlines.');
+  if (!briefing.paused && !briefing.ended) {
+    briefing.pause();
+    return;
+  }
+  say('For this sample briefing, Hanoi may see afternoon showers. On the AI desk, a research team is testing smaller speech recognition models to process audio on the device with less delay.');
+  playExclusive(briefing).catch((error) => {
+    if (error.name !== 'AbortError') say('Briefing audio was unavailable. You can try the Hear sample briefing button again.');
+  });
+}
+
+function playIntroduction() {
+  introStatus.hidden = true;
+  if (!intro.paused && !intro.ended) {
+    intro.pause();
+    return;
+  }
+  playExclusive(intro).catch((error) => {
+    if (error.name === 'AbortError') return;
+    introStatus.textContent = 'Audio is unavailable. You can open the transcript below.';
+    introStatus.hidden = false;
+  });
 }
 
 const commands = [
   [startFocus, ['start focus', 'resume focus', 'start pomodoro', 'bat dau tap trung', 'bat dau pomodoro', 'tiep tuc tap trung']],
   [pauseFocus, ['pause focus', 'tam dung tap trung', 'tam dung pomodoro']],
   [resetFocus, ['reset timer', 'reset focus', 'dat lai bo dem', 'dat lai pomodoro']],
-  [playMusic, ['play piano', 'play music', 'bat nhac', 'bat piano', 'mo nhac']],
+  [playMusic, ['play piano', 'play music', 'bat nhac', 'bat nhac piano', 'bat piano', 'mo nhac']],
   [pauseMusic, ['pause piano', 'pause music', 'tat nhac', 'dung nhac', 'tam dung nhac']],
-  [showBriefing, ['sample briefing', 'show briefing', 'doc ban tin', 'mo ban tin', 'ban tin']],
+  [showBriefing, ['sample briefing', 'show briefing', 'hear briefing', 'doc ban tin', 'nghe ban tin', 'mo ban tin', 'ban tin']],
 ];
 const actions = new Map(commands.flatMap(([action, phrases]) => phrases.map((phrase) => [phrase, action])));
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const command = input.value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replaceAll('đ', 'd')
+function runCommand(phrase) {
+  const command = phrase.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replaceAll('đ', 'd')
     .replace(/[^a-z0-9 ]+/g, ' ').trim().replace(/\s+/g, ' ');
   const action = actions.get(command);
-  if (!action) return say('Try “start focus”, “bật nhạc”, or “sample briefing”.');
+  if (!action) {
+    say('Try “start focus”, “bật nhạc”, or “sample briefing”.');
+    return false;
+  }
   action();
-  input.value = '';
+  return true;
+}
+
+const voicePrompt = 'Try “bật nhạc” or “bắt đầu tập trung”.';
+
+function finishListening(session, message) {
+  if (!session || session !== recognition) return false;
+  recognition = null;
+  listening = false;
+  voiceButton.textContent = 'Speak Vietnamese';
+  voiceButton.setAttribute('aria-pressed', 'false');
+  voiceHint.textContent = message;
+  syncOrb();
+  return true;
+}
+
+function stopListening() {
+  const session = recognition;
+  if (finishListening(session, voicePrompt)) session.abort();
+}
+
+function listen() {
+  if (recognition) return stopListening();
+  for (const player of players) player.pause();
+
+  try {
+    const session = new SpeechRecognition();
+    recognition = session;
+    session.lang = 'vi-VN';
+    session.continuous = false;
+    session.interimResults = false;
+    voiceButton.textContent = 'Cancel mic';
+    voiceButton.setAttribute('aria-pressed', 'true');
+    voiceHint.textContent = 'Opening your browser’s speech recognition.';
+
+    session.onstart = () => {
+      if (session !== recognition) return;
+      listening = true;
+      voiceButton.textContent = 'Stop listening';
+      voiceHint.textContent = 'Listening for a Vietnamese command…';
+      syncOrb();
+    };
+    session.onresult = (event) => {
+      const result = event.results[event.resultIndex];
+      const phrase = result?.isFinal ? result[0].transcript.trim() : '';
+      if (!phrase || !finishListening(session, 'Heard “' + phrase + '”.')) return;
+      runCommand(phrase);
+    };
+    session.onend = () => finishListening(session, 'No command was received. Try again or type it instead.');
+    session.onerror = ({ error }) => {
+      const denied = error === 'not-allowed' || error === 'service-not-allowed';
+      finishListening(session, denied ? 'Microphone access was blocked. Allow access or type a command.' :
+        error === 'no-speech' ? 'No speech was detected. Try again.' : 'Speech recognition is unavailable. You can type a command.');
+    };
+    session.start();
+  } catch {
+    const message = 'The browser could not open the microphone. You can type a command.';
+    if (!finishListening(recognition, message)) voiceHint.textContent = message;
+  }
+}
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  stopListening();
+  if (runCommand(input.value)) input.value = '';
 });
 
 focusButton.addEventListener('click', () => deadline === null ? startFocus() : pauseFocus());
 resetButton.addEventListener('click', resetFocus);
 musicButton.addEventListener('click', () => music.paused ? playMusic() : pauseMusic());
 newsButton.addEventListener('click', showBriefing);
-music.addEventListener('play', updateMusic);
-music.addEventListener('pause', updateMusic);
-document.addEventListener('visibilitychange', tick);
+introButton.addEventListener('click', playIntroduction);
+for (const player of players) {
+  for (const event of ['play', 'pause', 'ended', 'error']) player.addEventListener(event, updateAudioControls);
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) stopListening();
+  tick();
+});
 
 music.volume = 0.45;
 setMode('idle', 'Ready', [71, 224, 181]);
-for (const control of [focusButton, musicButton, newsButton, input, form.querySelector('button')]) control.disabled = false;
+for (const control of [focusButton, musicButton, newsButton, introButton, input, form.querySelector('button')]) control.disabled = false;
+if (SpeechRecognition) {
+  voiceButton.disabled = false;
+  voiceButton.setAttribute('aria-pressed', 'false');
+  voiceButton.addEventListener('click', listen);
+} else {
+  voiceHint.textContent = 'This browser does not support voice commands. You can type the same commands.';
+}

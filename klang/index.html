@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f5f0">
-  <meta name="description" content="Try Klang, Nguyen Xuan Quang’s personal assistant, and see how voice, focus tools, and AI work together.">
+  <meta name="description" content="Meet Klang, Nguyen Xuan Quang’s Vietnamese-first assistant for briefings, focus, and AI chat. Hear it speak and try a voice command.">
   <title>Klang — Nguyen Xuan Quang</title>
   <link rel="icon" href="../assets/quang-logo.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,15 @@
         <p class="klang-kicker">Selected work / Personal assistant</p>
         <h1>Klang<span>.</span></h1>
       </div>
-      <p>A Vietnamese-first assistant for listening to the news, getting into focus, and getting things done with a sentence.</p>
+      <div class="klang-intro-copy">
+        <p>Klang is a Vietnamese-first personal assistant. It brings weather and news into one briefing, helps you start a focus session with music, and answers open questions through chat. The full app also supports connected Gmail and a personal sleep journal.</p>
+        <button class="klang-primary" type="button" id="intro-button" aria-controls="klang-intro-audio" disabled>Hear Klang in Vietnamese</button>
+        <p id="intro-status" role="status" hidden></p>
+        <details class="klang-transcript">
+          <summary>Vietnamese transcript</summary>
+          <p lang="vi">Xin chào, mình là Klang. Mình có thể đọc bản tin, xem thời tiết và giúp bạn vào guồng tập trung. Bạn có thể nói bật nhạc piano, bắt đầu tập trung, hoặc hỏi mình về một chủ đề bạn đang tìm hiểu. Trong bản dùng thử, hãy bấm nút mic và nói bật nhạc. Bạn cũng có thể nghe thử một đoạn bản tin.</p>
+        </details>
+      </div>
     </header>
 
     <section class="klang-lab" aria-labelledby="demo-title">
@@ -44,11 +52,11 @@
       </div>
       <div class="klang-console">
         <h2 id="demo-title">Try a command</h2>
-        <p class="klang-lab-note">This demo runs in your browser with a sample briefing.</p>
+        <p class="klang-lab-note">Try the focus timer, piano, and a narrated sample briefing.</p>
         <div class="klang-controls">
           <button type="button" id="focus-button" disabled>Start focus</button>
           <button type="button" id="music-button" aria-pressed="false" disabled>Play piano</button>
-          <button type="button" id="news-button" disabled>Sample briefing</button>
+          <button type="button" id="news-button" aria-controls="klang-briefing-audio" disabled>Hear sample briefing</button>
           <button type="button" id="reset-button" disabled>Reset timer</button>
         </div>
         <div class="klang-output" role="status" aria-atomic="true">
@@ -62,9 +70,15 @@
             <button type="submit" id="command-submit" disabled>Run</button>
           </div>
         </form>
+        <div class="klang-voice">
+          <button type="button" id="voice-button" aria-describedby="voice-hint" disabled>Speak Vietnamese</button>
+          <p id="voice-hint" role="status">Try “bật nhạc” or “bắt đầu tập trung”.</p>
+        </div>
         <noscript><p>Enable JavaScript to try the interactive demo.</p></noscript>
       </div>
       <audio id="klang-music" src="./rain-keys.mp3" preload="none" loop></audio>
+      <audio id="klang-intro-audio" src="./intro-vi.mp3" preload="none"></audio>
+      <audio id="klang-briefing-audio" src="./briefing-vi.mp3" preload="none"></audio>
     </section>
 
     <section class="klang-case" id="how-it-works" aria-labelledby="case-title">
@@ -74,9 +88,9 @@
         <p class="klang-case-intro">I built Klang to explore what should happen after you say a command out loud.</p>
       </div>
       <dl class="klang-notes">
-        <div><dt>Voice you can see</dt><dd>The full app has push-to-talk and Vietnamese narration. A canvas orb changes colour with the assistant’s state and responds to audio levels.</dd></div>
-        <div><dt>A command becomes an action</dt><dd>Known commands can start a timer or open a briefing directly. A server-side skills layer validates actions before they run.</dd></div>
-        <div><dt>AI with a fallback</dt><dd>Open-ended requests go to an LLM. The server can fall back to another configured provider before the reply starts. This browser demo uses scripted responses.</dd></div>
+        <div><dt>Voice you can see</dt><dd>The full app uses push-to-talk and Vietnamese narration. Its particle orb shows when Klang is listening, thinking, or speaking. Try a spoken Vietnamese command or hear a recorded sample in the demo.</dd></div>
+        <div><dt>Daily briefings and shortcuts</dt><dd>Klang can read scheduled briefings and include weather. Common requests can open a tool or start a focus timer directly. A skills layer checks that an action is allowed before it runs.</dd></div>
+        <div><dt>AI with a fallback</dt><dd>The full assistant streams answers and can switch AI providers before a reply starts. The development build adds passphrase-protected web chat through a Cloudflare Worker. This public demo uses fixed commands and sample content.</dd></div>
       </dl>
     </section>
     <footer class="klang-footer"><a href="../#klang-project">Back to selected work</a><span>Nguyen Xuan Quang</span></footer>

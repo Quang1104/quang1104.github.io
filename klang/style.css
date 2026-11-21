@@ -89,7 +89,7 @@
 .klang-guide h2 { font: 400 2.75rem/1 var(--serif); margin: .2em 0 .3em; }
 .klang-guide-close { width: 44px; height: 44px; border-radius: 50%; background: #e2ece4; font-size: 1.35rem; }
 .klang-guide-choices { display: grid; gap: .5rem; margin-top: 1rem; }
-.klang-guide-choices button, .klang-controls button {
+.klang-guide-choices button, .klang-controls button, .klang-voice button {
   min-height: 44px;
   padding: .57rem .7rem;
   border: 1px solid #cad9d0;
@@ -117,7 +117,14 @@
 
 .klang-intro h1 { font: 400 clamp(5rem, 14vw, 9rem)/.88 var(--serif); margin-top: .18em; }
 .klang-intro h1 span { color: #247f61; }
-.klang-intro > p { max-width: 24rem; color: var(--muted); font-size: clamp(1.05rem, 2.1vw, 1.25rem); line-height: 1.6; padding-bottom: .45rem; }
+.klang-intro-copy { max-width: 32rem; color: var(--muted); }
+.klang-intro-copy > p:first-child { font-size: clamp(1rem, 1.7vw, 1.12rem); line-height: 1.6; }
+.klang-intro-copy .klang-primary { margin-top: .8rem; font-size: .9rem; }
+.klang-intro-copy .klang-primary:disabled { opacity: .55; }
+#intro-status { margin-top: .35rem; font-size: .875rem; }
+.klang-transcript { margin-top: .55rem; font-size: .875rem; }
+.klang-transcript summary { width: fit-content; cursor: pointer; color: var(--green); font-weight: 600; }
+.klang-transcript p { margin-top: .35rem; }
 
 .klang-lab {
   display: grid;
@@ -205,6 +212,11 @@
 .klang-command input::placeholder { color: #64716d; }
 .klang-command button { min-height: 2.75rem; padding: .5rem 1rem; border-radius: .55rem; background: #2458c7; color: white; font-weight: 600; }
 .klang-command button:not(:disabled):hover { background: #1946aa; }
+.klang-voice { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem .75rem; }
+.klang-voice button[aria-pressed="true"] { background: #18624c; border-color: #18624c; color: white; }
+.klang-voice button:not(:disabled):hover { border-color: #44856e; }
+.klang-voice button:disabled { opacity: .6; cursor: default; }
+.klang-voice p { flex: 1 1 10rem; color: var(--muted); font-size: .875rem; line-height: 1.45; overflow-wrap: anywhere; }
 .klang-case { display: grid; grid-template-columns: .8fr 1fr; gap: 3rem; padding: clamp(3.2rem, 8vw, 6rem) 0; }
 .klang-case h2 { margin: .18em 0 .3em; font: 400 clamp(2.7rem, 6vw, 4rem)/1 var(--serif); }
 .klang-case-intro { max-width: 24rem; color: var(--muted); }
