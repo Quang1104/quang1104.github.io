@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f0">
+  <meta name="description" content="Try Klang, Nguyen Xuan Quang’s personal assistant, and see how voice, focus tools, and AI work together.">
+  <title>Klang — Nguyen Xuan Quang</title>
+  <link rel="icon" href="../assets/quang-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./demo.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header klang-page-header"><div class="header-inner wrap">
+    <a class="brand" href="../" aria-label="Nguyen Xuan Quang’s portfolio">
+      <img class="brand-logo" src="../assets/quang-logo.png" alt="" width="42" height="42">
+      <span>Xuan Quang<span class="brand-sub">Personal portfolio</span></span>
+    </a>
+    <nav aria-label="Project navigation"><a href="#how-it-works">How it works</a><a href="../#work">All work</a></nav>
+  </div></header>
+  <main class="wrap klang-page" id="main">
+    <header class="klang-intro">
+      <div>
+        <p class="klang-kicker">Selected work / Personal assistant</p>
+        <h1>Klang<span>.</span></h1>
+      </div>
+      <p>A Vietnamese-first assistant for listening to the news, getting into focus, and getting things done with a sentence.</p>
+    </header>
+
+    <section class="klang-lab" aria-labelledby="demo-title">
+      <div class="klang-stage" data-mode="idle">
+        <div class="klang-stage-top"><span class="klang-kicker">Klang</span><span id="stage-state">Ready</span></div>
+        <div class="klang-canvas">
+          <canvas id="klang-core" aria-hidden="true"></canvas>
+          <span class="klang-orb-center" aria-hidden="true">KLANG</span>
+        </div>
+        <div class="klang-timer" role="timer" aria-label="Time remaining" id="timer">25:00</div>
+        <p class="klang-timer-label" id="timer-label">Focus timer</p>
+      </div>
+      <div class="klang-console">
+        <h2 id="demo-title">Try a command</h2>
+        <p class="klang-lab-note">This demo runs in your browser with a sample briefing.</p>
+        <div class="klang-controls">
+          <button type="button" id="focus-button" disabled>Start focus</button>
+          <button type="button" id="music-button" aria-pressed="false" disabled>Play piano</button>
+          <button type="button" id="news-button" disabled>Sample briefing</button>
+          <button type="button" id="reset-button" disabled>Reset timer</button>
+        </div>
+        <div class="klang-output" role="status" aria-atomic="true">
+          <p class="klang-kicker">Klang</p>
+          <p id="demo-reply">Pick a command to get started.</p>
+        </div>
+        <form id="demo-command" class="klang-command">
+          <label for="command-text">Type in English or Vietnamese</label>
+          <div>
+            <input id="command-text" maxlength="100" placeholder="Bắt đầu tập trung" autocomplete="off" required disabled>
+            <button type="submit" id="command-submit" disabled>Run</button>
+          </div>
+        </form>
+        <noscript><p>Enable JavaScript to try the interactive demo.</p></noscript>
+      </div>
+      <audio id="klang-music" src="./rain-keys.mp3" preload="none" loop></audio>
+    </section>
+
+    <section class="klang-case" id="how-it-works" aria-labelledby="case-title">
+      <div>
+        <p class="klang-kicker">Project notes</p>
+        <h2 id="case-title">How Klang <em>works.</em></h2>
+        <p class="klang-case-intro">I built Klang to explore what should happen after you say a command out loud.</p>
+      </div>
+      <dl class="klang-notes">
+        <div><dt>Voice you can see</dt><dd>The full app has push-to-talk and Vietnamese narration. A canvas orb changes colour with the assistant’s state and responds to audio levels.</dd></div>
+        <div><dt>A command becomes an action</dt><dd>Known commands can start a timer or open a briefing directly. A server-side skills layer validates actions before they run.</dd></div>
+        <div><dt>AI with a fallback</dt><dd>Open-ended requests go to an LLM. The server can fall back to another configured provider before the reply starts. This browser demo uses scripted responses.</dd></div>
+      </dl>
+    </section>
+    <footer class="klang-footer"><a href="../#klang-project">Back to selected work</a><span>Nguyen Xuan Quang</span></footer>
+  </main>
+</body>
+</html>

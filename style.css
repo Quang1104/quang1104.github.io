@@ -24,3 +24,4 @@ dialog{width:min(1040px,calc(100% - 40px));max-height:92dvh;border:1px solid #42
 @media(max-width:1100px){.workspace-project{padding:26px;gap:26px;grid-template-columns:1fr 1fr}.workspace-copy h3{font-size:33px}}
 @media(max-width:760px){.workspace-project{grid-template-columns:1fr;padding:20px;gap:25px;margin-top:38px}.workspace-copy h3{font-size:34px}.workspace-copy>p:not(.eyebrow){font-size:14px}.workspace-copy>.eyebrow{font-size:9px}.workspace-flow{font-size:9px;gap:6px}.workspace-copy .project-links{gap:4px 15px}.workspace-copy .project-links>a,.workspace-copy .project-links>button{font-size:11px}.journey-body .degree-line{font-size:13px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+@media(max-width:380px){.hero h1{font-size:clamp(48px,15.5vw,63px)}}

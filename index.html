@@ -16,6 +16,8 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
+  <link rel="stylesheet" href="klang/style.css">
+  <script type="module" src="klang/guide.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -62,9 +64,9 @@
 <section class="work section" id="work" aria-labelledby="work-title"><div class="wrap">
   <div class="section-heading"><div><p class="eyebrow">02 / SELECTED WORK</p><h2 id="work-title">Made to be<br><em>put to the test.</em></h2></div><div class="heading-note"><span class="mono">2025 — 2026</span><p>Experiments, team tools, <br>and the part I played.</p></div></div>
   <div class="project-pair">
-      <article class="project">
+      <article class="project" id="pointsnap-project">
         <button class="project-image pointsnap-image" type="button" data-video="pointsnap" aria-label="Play PointSnap 3D demo, 53 seconds"><img src="assets/pointsnap.jpg" alt="PointSnap 3D project interface with LiDAR points and flagged cuboid labels" width="1440" height="900" loading="lazy"><span class="video-chip">53 sec demo <span class="play-icon" aria-hidden="true">▶</span></span></button>
-        <div class="project-meta mono"><span>COMPUTER VISION TOOLING</span><span>TEAM OF 6</span></div><h3>PointSnap 3D <span aria-hidden="true">↗</span></h3><p>A quality check for 3D cuboid labels. Cross-checks boxes against LiDAR, tracks, camera images, and annotation specifications.</p><p class="project-role"><span>MY PART</span> CVAT browser extension development and QC testing.</p><div class="tags"><span>JavaScript</span><span>CVAT</span><span>LiDAR</span></div><div class="project-links"><a href="https://pointsnap-3d.vercel.app/" target="_blank" rel="noopener">Live showcase ↗</a><a href="https://github.com/imvhuy/PointSnap-3D-Tool" target="_blank" rel="noopener">Team repository ↗</a></div><details class="project-detail"><summary>Evaluation &amp; contribution <span aria-hidden="true">+</span></summary><p>I developed the browser extension that brings checks into the CVAT workflow and tested its QC results. On five held-out nuScenes scenes with injected errors (4,025 boxes), the team’s tool caught 47 of 49 severe errors and 21 of 23 orientation flips.</p><p class="small-note">Numbers follow the evaluation recorded in my CV. The linked showcase may reflect later versions.</p></details>
+        <div class="project-meta mono"><span>COMPUTER VISION TOOLING</span><span>TEAM OF 6</span></div><h3>PointSnap 3D <span aria-hidden="true">↗</span></h3><p>A quality check for 3D cuboid labels. Cross-checks boxes against LiDAR, tracks, camera images, and annotation specifications.</p><p class="project-role"><span>MY PART</span> CVAT browser extension development and QC testing.</p><div class="tags"><span>JavaScript</span><span>CVAT</span><span>LiDAR</span></div><div class="project-links"><a href="https://pointsnap-3d.vercel.app/" target="_blank" rel="noopener">Live showcase ↗</a><a href="https://github.com/imvhuy/PointSnap-3D-Tool" target="_blank" rel="noopener">Team repository ↗</a></div><details class="project-detail" id="pointsnap-contribution"><summary>Evaluation &amp; contribution <span aria-hidden="true">+</span></summary><p>I developed the browser extension that brings checks into the CVAT workflow and tested its QC results. On five held-out nuScenes scenes with injected errors (4,025 boxes), the team’s tool caught 47 of 49 severe errors and 21 of 23 orientation flips.</p><p class="small-note">Numbers follow the evaluation recorded in my CV. The linked showcase may reflect later versions.</p></details>
       </article>
       <article class="project">
         <button class="project-image mentorprep-image" type="button" data-video="mentorprep" aria-label="Play MentorPrep demo, 2 minutes 54 seconds"><img src="assets/mentorprep.jpg" alt="MentorPrep showcase and team progress dashboard" width="1440" height="900" loading="lazy"><span class="video-chip">2 min 54 sec <span class="play-icon" aria-hidden="true">▶</span></span></button>
@@ -75,6 +77,17 @@
     <div class="workspace-copy"><p class="eyebrow">ANNOTATION OPERATIONS / TEAM WORKSPACE</p><h3 id="nhom14-title">Nhóm 14<br><em>Workspace.</em></h3><p>A web workspace for a CVAT annotation team, built on Google Apps Script and Google Sheets. Job submissions, track reviews, attendance, and daily KPI tracking come together in one place.</p><div class="workspace-flow" aria-label="Submit, review, rework, and complete"><span>Submit</span><i aria-hidden="true">→</i><span>Review</span><i aria-hidden="true">→</i><span>Rework</span><i aria-hidden="true">→</i><span>Complete</span></div><div class="tags"><span>Google Apps Script</span><span>Google Sheets</span><span>JavaScript</span></div><div class="project-links"><button type="button" data-video="nhom14">Watch the walkthrough ↗</button></div><details class="project-detail"><summary>How the workspace works <span aria-hidden="true">+</span></summary><p>Members submit annotation output by job and track their own tasks. Reviewers return tracks with issue notes, recheck corrections, and mark completed work. Admins assign jobs, configure daily KPI, manage attendance, and review weekly progress.</p><p>The app keeps a change history and uses revision checks to reduce conflicting edits. Separate member, reviewer, and admin flows support the team’s annotation process, while performance and discipline leaderboards make progress visible.</p></details></div>
   </article>
   <noscript><p class="nojs-videos">Project videos: <a href="assets/pointsnap-demo.mp4">PointSnap 3D</a> · <a href="assets/mentorprep-demo.mp4">MentorPrep</a> · <a href="assets/nhom14-demo.mp4">Nhóm 14 Workspace</a></p></noscript>
+  <article class="klang-card" id="klang-project" aria-labelledby="klang-project-title">
+    <div class="klang-card-copy">
+      <div class="klang-mark" aria-hidden="true"></div>
+      <div>
+        <p class="klang-kicker">Personal assistant</p>
+        <h3 id="klang-project-title">Klang</h3>
+        <p>Voice, briefings, and focus in one place. Try the orb, piano, and timer in the browser demo.</p>
+      </div>
+    </div>
+    <a class="klang-card-link" href="klang/">Try Klang</a>
+  </article>
   <article class="featured-project">
     <div class="feature-copy"><p class="eyebrow">GRADUATION THESIS / TEAM OF 2</p><h3>Vietnamese<br><em>Text-to-SQL</em></h3><p class="feature-description">How can retrieval and execution feedback make a Vietnamese chatbot’s SQL more reliable?</p><p class="project-role"><span>My contribution</span> RAG and SQL generation, retrieval experiments, and the multi-agent chatbot.</p><div class="tags"><span>Python</span><span>LangChain</span><span>PostgreSQL</span></div><a href="#thesis-notes" class="light-link" data-expand="thesis-notes">Inside the experiment <span aria-hidden="true">↘</span></a></div>
     <div class="experiment"><div class="experiment-top"><span class="mono">THE COMPARISON</span><span class="scope-note">100 Vietnamese test queries</span></div><div class="chart-key"><span><i class="key-baseline"></i>Baseline RAG</span><span><i class="key-hybrid"></i>Hybrid SQL Cards</span></div><div class="chart" aria-label="Execution accuracy: baseline 80 percent, Hybrid SQL Cards 91 percent. Result accuracy: baseline 75 percent, Hybrid SQL Cards 88 percent."><div class="chart-group"><div class="chart-label"><span>Execution accuracy</span><strong>80 <i>→</i> 91<span>%</span></strong></div><div class="bar baseline" style="--value:80%"></div><div class="bar hybrid" style="--value:91%"></div></div><div class="chart-group"><div class="chart-label"><span>Result accuracy</span><strong>75 <i>→</i> 88<span>%</span></strong></div><div class="bar baseline" style="--value:75%"></div><div class="bar hybrid" style="--value:88%"></div></div></div><p class="experiment-note">Hybrid retrieval combines BM25 with semantic search. Results describe the thesis evaluation set.</p></div>
@@ -95,5 +108,23 @@
 <section class="contact" id="contact" aria-labelledby="contact-title"><div class="wrap"><div class="contact-inner"><div><p class="eyebrow">05 / GET IN TOUCH</p><h2 id="contact-title">Let’s make<br><em>something useful.</em></h2><p>Interested in AI/ML opportunities<br>and thoughtful collaborations.</p><a class="contact-email" href="https://www.linkedin.com/in/quangxuan-nguyen/" target="_blank" rel="noopener">Connect on LinkedIn <span aria-hidden="true">↗</span></a></div><div class="contact-aside"><img class="contact-mascot" src="assets/quang-logo.png" alt="Quang’s blue monkey mascot waving hello" width="106" height="106" loading="lazy"><a href="https://github.com/Quang1104" target="_blank" rel="noopener">GitHub <span>↗</span></a><a href="https://www.linkedin.com/in/quangxuan-nguyen/" target="_blank" rel="noopener">LinkedIn <span>↗</span></a><a href="assets/Nguyen-Xuan-Quang-CV.pdf" target="_blank" rel="noopener">Résumé / PDF <span>↗</span></a></div></div><footer class="footer"><a href="#home">Nguyen Xuan Quang <span>© 2026</span></a><span class="mono">HO CHI MINH CITY, VIETNAM</span><a href="#home">Back to top ↑</a></footer></div></section>
 </main>
 <dialog id="video-dialog" aria-labelledby="video-title"><div class="dialog-top"><div><p class="eyebrow">PROJECT WALKTHROUGH</p><h2 id="video-title">Project demo</h2></div><button class="dialog-close" type="button" aria-label="Close video">×</button></div><video id="project-video" controls playsinline preload="none"></video><div class="dialog-bottom"><span>Original project demo · Vietnamese narration</span><a id="video-download" href="assets/pointsnap-demo.mp4" download>Download video ↓</a></div><p id="video-error" hidden>Playback unavailable in this browser. Use “Download video” to watch the MP4.</p></dialog>
+<button class="klang-launcher" id="klang-launcher" type="button" aria-haspopup="dialog" aria-controls="klang-guide" aria-expanded="false" hidden>
+  <span class="klang-mark" aria-hidden="true"></span> Ask Klang
+</button>
+<dialog class="klang-guide" id="klang-guide" aria-labelledby="klang-guide-title">
+  <div class="klang-guide-header">
+    <div><p class="klang-kicker">Portfolio guide</p><h2 id="klang-guide-title">Ask Klang</h2></div>
+    <form method="dialog"><button class="klang-guide-close" type="submit" aria-label="Close Klang guide">×</button></form>
+  </div>
+  <div class="klang-guide-choices">
+    <button type="button" data-guide-answer="project">Show me a featured project</button>
+    <button type="button" data-guide-answer="role">What did Quang build for PointSnap?</button>
+  </div>
+  <div class="klang-guide-answer">
+    <p id="guide-reply" role="status">Pick a question to explore Quang’s work.</p>
+    <a id="guide-project-link" hidden></a>
+  </div>
+  <a class="klang-primary" href="klang/">Try Klang</a>
+</dialog>
 </body>
 </html>
